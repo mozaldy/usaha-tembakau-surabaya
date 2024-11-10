@@ -47,8 +47,8 @@ model Absensi {
   karyawan       Karyawan   @relation(fields: [karyawanId], references: [id])
   karyawanId     Int
   tanggal        DateTime   @db.Date
-  waktuMasuk     DateTime   @db.Time
-  waktuKeluar    DateTime   @db.Time
+  waktuMasuk     DateTime   @default(now())
+  waktuKeluar    DateTime   @updatedAt@default(now())
   statusAbsensi  StatusAbsensi
 }
 

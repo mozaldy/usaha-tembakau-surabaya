@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { StatusKaryawan } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -53,18 +54,16 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const body = await req.json();
-  const {
-    namaLengkap,
-    email,
-    nomorTelepon,
-    tanggalLahir,
-    alamat,
-    tanggalMasuk,
-    departemenId,
-    jabatanId,
-    status,
-  } = body;
+  const searchParams = req.nextUrl.searchParams;
+  const namaLengkap = searchParams.get("namaLengkap");
+  const email = searchParams.get("email");
+  const nomorTelepon = searchParams.get("nomorTelepon");
+  const tanggalLahir = searchParams.get("tanggalLahir");
+  const alamat = searchParams.get("alamat");
+  const tanggalMasuk = searchParams.get("tanggalMasuk");
+  const departemenId = searchParams.get("departemenId");
+  const jabatanId = searchParams.get("jabatanId");
+  const status = searchParams.get("status");
 
   if (
     !namaLengkap ||
@@ -94,7 +93,7 @@ export async function POST(req: NextRequest) {
         tanggalMasuk: new Date(tanggalMasuk),
         departemenId: parseInt(departemenId),
         jabatanId: parseInt(jabatanId),
-        status,
+        status: StatusKaryawan[status as keyof typeof StatusKaryawan],
       },
     });
     return NextResponse.json(karyawan);
